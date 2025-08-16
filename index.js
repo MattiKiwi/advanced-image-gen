@@ -25,6 +25,7 @@ async function loadSettings() {
 
   // Updating settings in the UI
   $("#example_setting").prop("checked", extension_settings[extensionName].example_setting).trigger("input");
+  console.log("This has loaded correctly.");
 }
 
 // This function is called when the extension settings are changed in the UI
