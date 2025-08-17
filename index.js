@@ -1,5 +1,6 @@
 // Advanced NAI Image — inject dropdown + wire minimal behavior
-(function () {
+// Register with SillyTavern so the extension loads properly
+registerExtension('advanced-image-gen', async () => {
   const MODULE_ID = 'ani-ext-root';
   const PANEL_TARGETS = ['#extensions_settings2', '#extensions_settings']; // fallback if DOM changes
 
@@ -69,4 +70,4 @@
   }
   // Try immediately too
   injectPanel();
-})();
+});
