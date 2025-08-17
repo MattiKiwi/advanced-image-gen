@@ -1,4 +1,3 @@
-/* Light, ST-friendly tweaks */
 .ani-form { display: grid; gap: 10px; margin-top: 8px; }
 .ani-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
 @media (max-width: 900px) { .ani-grid { grid-template-columns: 1fr; } }
