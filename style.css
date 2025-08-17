@@ -1,31 +1,5 @@
-/* Lightweight styles to match ST’s compact UI */
+/* Light polish while keeping ST look-and-feel */
 .ani-ext { padding: 6px 8px; }
-.ani-dropdown__summary { cursor: pointer; font-weight: 600; }
-
-.ani-form { display: grid; gap: 10px; margin-top: 8px; }
-.ani-label { font-size: 0.9rem; opacity: 0.9; display: block; margin-bottom: 4px; }
-
-.ani-text {
-  width: 100%;
-  min-height: 2.5rem;
-  padding: 8px;
-  border: 1px solid var(--Grey500, #3a3a3a);
-  border-radius: 6px;
-  background: var(--BG, #1e1e1e);
-  color: inherit;
-  resize: vertical;
-}
-
-.ani-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+.ani-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media (max-width: 900px) { .ani-grid { grid-template-columns: 1fr; } }
-
 .ani-actions { display: flex; gap: 8px; margin-top: 6px; }
-.ani-btn {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--Grey500, #3a3a3a);
-  background: #2a2a2a;
-  cursor: pointer;
-}
-.ani-btn:hover { filter: brightness(1.1); }
-.ani-btn--primary { background: #3b82f6; border-color: #3b82f6; color: #fff; }

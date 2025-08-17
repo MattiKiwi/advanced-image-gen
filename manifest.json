@@ -5,5 +5,5 @@
   "version": "0.1.0",
   "js": "index.js",
   "css": "style.css",
-  "settings": "example.html"
+  "dropdown": "dropdown.html"
 }
