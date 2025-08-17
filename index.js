@@ -1,60 +1,72 @@
-// Advanced NAI Image — UI only (Idle-style dropdown panel)
-// Buttons only log to console for now, per your request.
-
+// Advanced NAI Image — inject dropdown + wire minimal behavior
 (function () {
-  const log = (...args) => console.log("[Advanced NAI Image]", ...args);
+  const MODULE_ID = 'ani-ext-root';
+  const PANEL_TARGETS = ['#extensions_settings2', '#extensions_settings']; // fallback if DOM changes
 
-  function bindOnce(el, type, handler) {
-    if (!el || el.dataset.bound === "1") return;
-    el.addEventListener(type, handler);
-    el.dataset.bound = "1";
+  function findExtensionsPanel() {
+    for (const sel of PANEL_TARGETS) {
+      const el = document.querySelector(sel);
+      if (el) return el;
+    }
+    return null;
   }
 
-  function wireUp() {
-    const btnDesc  = document.getElementById("ani-generate-desc");
-    const btnImage = document.getElementById("ani-generate-image");
+  async function injectPanel() {
+    const panel = findExtensionsPanel();
+    if (!panel) return; // panel not yet in DOM; observer will retry
 
-    const $prompt = document.getElementById("ani-prompt");
-    const $scene  = document.getElementById("ani-scene");
-    const $char   = document.getElementById("ani-char");
-    const $user   = document.getElementById("ani-user");
+    // Avoid duplicate injection
+    if (panel.querySelector(`#${MODULE_ID}`)) return;
 
-    if (btnDesc && $prompt) {
-      bindOnce(btnDesc, "click", () => {
-        const prompt = $prompt.value ?? "";
-        log("Generate Description → prompt:", prompt);
-      });
+    try {
+      const res = await fetch('./dropdown.html', { cache: 'no-cache' });
+      const html = await res.text();
+      const holder = document.createElement('div');
+      holder.innerHTML = html;
+      panel.appendChild(holder.firstElementChild);
+      wireHandlers();
+    } catch (e) {
+      console.error('[Advanced NAI Image] Failed to load dropdown.html:', e);
+    }
+  }
+
+  function wireHandlers() {
+    const $prompt = document.getElementById('ani-prompt');
+    const $scene  = document.getElementById('ani-scene');
+    const $char   = document.getElementById('ani-char');
+    const $user   = document.getElementById('ani-user');
+
+    const btnDesc  = document.getElementById('ani-generate-desc');
+    const btnImage = document.getElementById('ani-generate-image');
+
+    if (btnDesc) {
+      btnDesc.addEventListener('click', () => {
+        console.log('[Advanced NAI Image] Generate Description — prompt:', ($prompt?.value ?? ''));
+      }, { once: false });
     }
 
-    if (btnImage && $scene && $char && $user) {
-      bindOnce(btnImage, "click", () => {
+    if (btnImage) {
+      btnImage.addEventListener('click', () => {
         const payload = {
-          scene: $scene.value ?? "",
-          character: $char.value ?? "",
-          user: $user.value ?? "",
+          scene: $scene?.value ?? '',
+          character: $char?.value ?? '',
+          user: $user?.value ?? '',
         };
-        log("Generate Image → inputs:", payload);
-      });
+        console.log('[Advanced NAI Image] Generate Image — inputs:', payload);
+      }, { once: false });
     }
   }
 
-  // Panels are injected; observe until our nodes exist.
-  const obs = new MutationObserver(() => {
-    if (
-      document.getElementById("ani-generate-desc") ||
-      document.getElementById("ani-generate-image")
-    ) {
-      wireUp();
-    }
-  });
-
+  // Observe for Extensions panel becoming available (ST loads drawers dynamically)
+  const obs = new MutationObserver(() => injectPanel());
   if (document.body) {
     obs.observe(document.body, { childList: true, subtree: true });
-    wireUp();
   } else {
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener('DOMContentLoaded', () => {
       obs.observe(document.body, { childList: true, subtree: true });
-      wireUp();
+      injectPanel();
     });
   }
+  // Try immediately too
+  injectPanel();
 })();

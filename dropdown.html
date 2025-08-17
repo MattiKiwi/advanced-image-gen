@@ -1,43 +1,47 @@
-<div class="ani-ext">
+<!-- Advanced NAI Image — Dropdown panel -->
+<div id="ani-ext-root" class="ani-ext">
   <div class="inline-drawer">
-    <div class="inline-drawer-toggle inline-drawer-header">
+    <div class="inline-drawer-toggle inline-drawer-header" title="Advanced Novel AI Image UI">
       <b>Advanced NAI Image (UI)</b>
       <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
     </div>
 
     <div class="inline-drawer-content">
-      <div class="flex-container flexFlowColumn">
+      <div class="ani-form">
 
-        <!-- Prompt for generating scene description -->
-        <label class="checkbox_label" for="ani-prompt"><span>Prompt for scene description</span></label>
-        <textarea id="ani-prompt" class="text_pole textarea_compact autoSetHeight" rows="3"
-          placeholder="e.g., Summarize the chapter into a vivid scene setup…"></textarea>
+        <!-- 1) Prompt used to generate the scene description -->
+        <div class="ani-block">
+          <label class="ani-label" for="ani-prompt">Prompt for scene description</label>
+          <textarea id="ani-prompt" class="text_pole textarea_compact" rows="3"
+            placeholder="e.g., Summarize chapter into a vivid scene setup…"></textarea>
+        </div>
 
-        <!-- Scene description -->
-        <label class="checkbox_label" for="ani-scene"><span>Scene description</span></label>
-        <textarea id="ani-scene" class="text_pole textarea_compact autoSetHeight" rows="4"
-          placeholder="A windswept cliff at dusk…"></textarea>
+        <!-- 2) Scene description -->
+        <div class="ani-block">
+          <label class="ani-label" for="ani-scene">Scene description</label>
+          <textarea id="ani-scene" class="text_pole textarea_compact" rows="4"
+            placeholder="A windswept cliff at dusk…"></textarea>
+        </div>
 
-        <!-- Character descriptions -->
+        <!-- 3–4) Character descriptions -->
         <div class="ani-grid">
-          <div>
-            <label class="checkbox_label" for="ani-char"><span>Character (character)</span></label>
-            <textarea id="ani-char" class="text_pole textarea_compact autoSetHeight" rows="3"
+          <div class="ani-block">
+            <label class="ani-label" for="ani-char">Character description (character)</label>
+            <textarea id="ani-char" class="text_pole textarea_compact" rows="3"
               placeholder="The rogue: lean, scar over left brow…"></textarea>
           </div>
-          <div>
-            <label class="checkbox_label" for="ani-user"><span>Character (user)</span></label>
-            <textarea id="ani-user" class="text_pole textarea_compact autoSetHeight" rows="3"
-              placeholder="User avatar / self-insert…"></textarea>
+          <div class="ani-block">
+            <label class="ani-label" for="ani-user">Character description (user)</label>
+            <textarea id="ani-user" class="text_pole textarea_compact" rows="3"
+              placeholder="The user avatar / self-insert…"></textarea>
           </div>
         </div>
 
         <!-- Actions -->
         <div class="ani-actions">
-          <div id="ani-generate-desc" class="menu_button">Generate Description</div>
-          <div id="ani-generate-image" class="menu_button menu_button_primary">Generate Image</div>
+          <button id="ani-generate-desc" class="menu_button" type="button">Generate Description</button>
+          <button id="ani-generate-image" class="menu_button" type="button">Generate Image</button>
         </div>
-
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
-/* Light polish while keeping ST look-and-feel */
-.ani-ext { padding: 6px 8px; }
-.ani-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* Light, ST-friendly tweaks */
+.ani-form { display: grid; gap: 10px; margin-top: 8px; }
+.ani-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
 @media (max-width: 900px) { .ani-grid { grid-template-columns: 1fr; } }
+.ani-label { display: block; font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
 .ani-actions { display: flex; gap: 8px; margin-top: 6px; }
