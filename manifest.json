@@ -1,11 +1,9 @@
 {
-    "display_name": "Advanced Image Gen",
-    "loading_order": 10,
-    "requires": [],
-    "optional": [],
-    "js": "index.js",
-    "css": "style.css",
-    "author": "MattiKiwi",
-    "version": "1.0.0",
-    "homePage": "https://github.com/MattiKiwi/advanced-image-gen"
+  "display_name": "Advanced NAI Image",
+  "loading_order": 10,
+  "author": "Your Name",
+  "version": "0.1.0",
+  "js": "index.js",
+  "css": "style.css",
+  "settings": "example.html"
 }

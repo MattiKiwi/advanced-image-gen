@@ -1,64 +1,64 @@
-// The main script for the extension
-// The following are examples of some basic extension functionality
+// Advanced NAI Image — minimal UI wiring
+// This file waits for the settings panel to exist and binds button clicks.
+// It only logs to the console for now (no backend calls).
 
-//You'll likely need to import extension_settings, getContext, and loadExtensionSettings from extensions.js
-import { extension_settings, getContext, loadExtensionSettings } from "../../../extensions.js";
+// If your template supports getContext(), you can import it,
+// but to keep this template-agnostic we just bind directly once the DOM has our elements.
 
-//You'll likely need to import some other functions from the main script
-import { saveSettingsDebounced } from "../../../../script.js";
+(function () {
+  // Bind once elements appear (ST loads panels dynamically)
+  const once = (el, type, handler) => {
+    if (!el || el.dataset?.bound === "1") return;
+    el.addEventListener(type, handler);
+    el.dataset.bound = "1";
+  };
 
-// Keep track of where your extension is located, name should match repo name
-const extensionName = "st-extension-example";
-const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
-const extensionSettings = extension_settings[extensionName];
-const defaultSettings = {};
+  const wireUp = () => {
+    const btnDesc  = document.getElementById("ani-generate-desc");
+    const btnImage = document.getElementById("ani-generate-image");
 
+    // Textareas
+    const $prompt = document.getElementById("ani-prompt");
+    const $scene  = document.getElementById("ani-scene");
+    const $char   = document.getElementById("ani-char");
+    const $user   = document.getElementById("ani-user");
 
- 
-// Loads the extension settings if they exist, otherwise initializes them to the defaults.
-async function loadSettings() {
-  //Create the settings if they don't exist
-  extension_settings[extensionName] = extension_settings[extensionName] || {};
-  if (Object.keys(extension_settings[extensionName]).length === 0) {
-    Object.assign(extension_settings[extensionName], defaultSettings);
+    if (btnDesc && $prompt) {
+      once(btnDesc, "click", () => {
+        const prompt = $prompt.value ?? "";
+        console.log("[Advanced NAI Image] Generate Description — prompt:", prompt);
+      });
+    }
+
+    if (btnImage && $scene && $char && $user) {
+      once(btnImage, "click", () => {
+        const payload = {
+          scene: $scene.value ?? "",
+          character: $char.value ?? "",
+          user: $user.value ?? "",
+        };
+        console.log("[Advanced NAI Image] Generate Image — inputs:", payload);
+      });
+    }
+  };
+
+  // Observe DOM because settings panels can be injected after load
+  const obs = new MutationObserver(() => {
+    // Only try wiring when at least one of our elements exists
+    if (document.getElementById("ani-generate-desc") || document.getElementById("ani-generate-image")) {
+      wireUp();
+    }
+  });
+
+  // Kick off observer and also attempt an immediate bind
+  if (document.body) {
+    obs.observe(document.body, { childList: true, subtree: true });
+    // Try immediately as well
+    wireUp();
+  } else {
+    document.addEventListener("DOMContentLoaded", () => {
+      obs.observe(document.body, { childList: true, subtree: true });
+      wireUp();
+    });
   }
-
-  // Updating settings in the UI
-  $("#example_setting").prop("checked", extension_settings[extensionName].example_setting).trigger("input");
-  console.log("This has loaded correctly.");
-}
-
-// This function is called when the extension settings are changed in the UI
-function onExampleInput(event) {
-  const value = Boolean($(event.target).prop("checked"));
-  extension_settings[extensionName].example_setting = value;
-  saveSettingsDebounced();
-}
-
-// This function is called when the button is clicked
-function onButtonClick() {
-  // You can do whatever you want here
-  // Let's make a popup appear with the checked setting
-  toastr.info(
-    `The checkbox is ${extension_settings[extensionName].example_setting ? "checked" : "not checked"}`,
-    "A popup appeared because you clicked the button!"
-  );
-}
-
-// This function is called when the extension is loaded
-jQuery(async () => {
-  // This is an example of loading HTML from a file
-  const settingsHtml = await $.get(`${extensionFolderPath}/example.html`);
-
-  // Append settingsHtml to extensions_settings
-  // extension_settings and extensions_settings2 are the left and right columns of the settings menu
-  // Left should be extensions that deal with system functions and right should be visual/UI related 
-  $("#extensions_settings").append(settingsHtml);
-
-  // These are examples of listening for events
-  $("#my_button").on("click", onButtonClick);
-  $("#example_setting").on("input", onExampleInput);
-
-  // Load settings when starting things up (if you have any)
-  loadSettings();
-});
+})();
